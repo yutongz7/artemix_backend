@@ -7,4 +7,4 @@
 
 ## TODO:
 - Edit the schema in models if you have better idea
-- If you want to test, could create a json file follow the specific schema and insert into database by `makeUpDataTest.ipynb`
+- If you want to test, could create a json file follow the specific schema and insert into database by `makeUpDataTest.ipynb`.
