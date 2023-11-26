@@ -5,9 +5,11 @@ var ArtSchema = new mongoose.Schema({
     userId: String,
     userName: String,
     artTitle: String,
-    artContent: String,
-    artAddress: String,
+    artContent: String, // caption
+    artAddress: String, // image path
     artTags: {type: [String], default: []},
+    width: Number,
+    height: Number,
 });
 
 module.exports = mongoose.model('Art', ArtSchema);

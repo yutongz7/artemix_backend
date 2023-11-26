@@ -1,9 +1,10 @@
 module.exports = function (app, router) {
-    app.use('/api', require('./home.js')(router));
-    app.use('/api/users', require('./users.js')(router));
-    app.use('/api/arts', require('./arts.js')(router));
-    app.use('/api/tags', require('./tags.js')(router));
-    app.use('/api/likes', require('./likes.js')(router));
-    app.use('/api/comments', require('./comments.js')(router));
+    app.use('/', require('./home.js')(router));
+    app.use('/users', require('./users.js')(router));
+    app.use('/arts', require('./arts.js')(router));
+    app.use('/tags', require('./tags.js')(router));
+    app.use('/likes', require('./likes.js')(router));
+    app.use('/comments', require('./comments.js')(router));
+    
     return router;
 };

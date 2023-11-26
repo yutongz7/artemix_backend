@@ -2,6 +2,7 @@ var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
     secrets = require('./config/secrets'),
+    path = require('path');
     bodyParser = require('body-parser');
 
 var app = express();
@@ -34,7 +35,10 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 require('./routes')(app, router);
 
-app.listen(port);
-console.log('Server runing on port ', + port);
+app.listen(port, () => {
+    console.log('Server running on port', + port);
+});
