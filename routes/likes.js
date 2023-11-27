@@ -25,12 +25,12 @@ module.exports = function (router) {
                 res.send(response);
                 return
             }
-            var response_successfull = {
-                message: "GET: 200 sucess",
+            var response_successful = {
+                message: "GET: 200 success",
                 data: likes
             }
             res.status(200);
-            res.send(response_successfull);
+            res.send(response_successful);
             return
         } catch (err) {
             res.status(500);
@@ -42,5 +42,42 @@ module.exports = function (router) {
             return
         }
     })
+
+    likesRoute.post(async function (req, res) {
+        try {
+          const { likeFromUserId, artistIdToLikeCount, likedArtIds } = req.body;
+      
+          let existingLike = await Likes.findOne({ likeFromUserId });
+
+        if (existingLike) {
+            existingLike.artistIdToLikeCount = artistIdToLikeCount;
+            existingLike.likedArtIds = likedArtIds;
+            await existingLike.save();
+
+            res.status(200).json({
+            message: 'POST: 200 success (updated)',
+            data: existingLike,
+            });
+        } else {
+            const newLike = new Likes({
+            likeFromUserId,
+            artistIdToLikeCount,
+            likedArtIds,
+            });
+
+            await newLike.save();
+
+            res.status(201).json({
+            message: 'POST: 201 created',
+            data: newLike,
+            });
+        }
+        } catch (err) {
+        res.status(500).json({
+            message: 'POST: 500 server error',
+            data: { err },
+        });
+        }
+    });
     return router;
 }
