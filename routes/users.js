@@ -25,12 +25,12 @@ module.exports = function (router) {
                 res.send(response);
                 return
             }
-            var response_successfull = {
-                message: "GET: 200 sucess",
+            var response_successful = {
+                message: "GET: 200 success",
                 data: users
             }
             res.status(200);
-            res.send(response_successfull);
+            res.send(response_successful);
             return
         } catch (err) {
             res.status(500);
