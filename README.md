@@ -23,7 +23,7 @@
     - userPreferenceTags: {type: [String], default: []}, eg. [painting, art]
     - tags: {type: [String], default: []}, eg. [writer, photographer]
   - Art table:
-    - artID: String, e.g. `user_1_art_1`
+    - artID: Could ignore currently using `_id` for this field, type as object
     - userId: String, should by same as the userId in user table
     - userName: String, should by same as the userName in user table
     - artTitle: String,
@@ -43,8 +43,9 @@
   - Like table:
     - likeId: String, e.g. `like_1`
     - likeFromUserId: String, should by same as the userId in user table
-    - likedArtIds: Array,
-    - artistIdToLikeCount: {
-          type: Map,
-          default: {},
-      },
+    - likedArtIds: {type: [String], default: []},
+    - artistIdToLikeArts: {
+        type: Map,
+        of: [String],
+        default: {},
+    }, e.g. {artist1: [art1, art2], artist2: [art2, art3]}
