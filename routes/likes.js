@@ -25,9 +25,13 @@ module.exports = function (router) {
                 res.send(response);
                 return
             }
+            const likesData = likes.map((like) => ({
+                ...like._doc,
+                artistIdToLikedArts: Object.fromEntries(like.artistIdToLikedArts)
+            }));
             var response_successful = {
                 message: "GET: 200 success",
-                data: likes
+                data: likesData
             }
             res.status(200);
             res.send(response_successful);
@@ -45,38 +49,38 @@ module.exports = function (router) {
 
     likesRoute.post(async function (req, res) {
         try {
-          const { likeFromUserId, artistIdToLikeCount, likedArtIds } = req.body;
-      
-          let existingLike = await Likes.findOne({ likeFromUserId });
-
-        if (existingLike) {
-            existingLike.artistIdToLikeCount = artistIdToLikeCount;
-            existingLike.likedArtIds = likedArtIds;
-            await existingLike.save();
-
-            res.status(200).json({
-            message: 'POST: 200 success (updated)',
-            data: existingLike,
-            });
-        } else {
-            const newLike = new Likes({
-            likeFromUserId,
-            artistIdToLikeCount,
-            likedArtIds,
-            });
-
-            await newLike.save();
-
-            res.status(201).json({
-            message: 'POST: 201 created',
-            data: newLike,
-            });
-        }
+            const { likeFromUserId, artistIdToLikeCount, likedArtIds } = req.body;
+    
+            let existingLike = await Likes.findOne({ likeFromUserId });
+    
+            if (existingLike) {
+                existingLike.artistIdToLikedArts = new Map(Object.entries(artistIdToLikeCount));
+                existingLike.likedArtIds = likedArtIds;
+                await existingLike.save();
+    
+                res.status(200).json({
+                    message: 'POST: 200 success (updated)',
+                    data: existingLike,
+                });
+            } else {
+                const newLike = new Likes({
+                    likeFromUserId,
+                    artistIdToLikedArts: new Map(Object.entries(artistIdToLikeCount)),
+                    likedArtIds,
+                });
+    
+                await newLike.save();
+    
+                res.status(201).json({
+                    message: 'POST: 201 created',
+                    data: newLike,
+                });
+            }
         } catch (err) {
-        res.status(500).json({
-            message: 'POST: 500 server error',
-            data: { err },
-        });
+            res.status(500).json({
+                message: 'POST: 500 server error',
+                data: { err },
+            });
         }
     });
     return router;

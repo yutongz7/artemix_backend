@@ -4,7 +4,7 @@ var likeSchema = new mongoose.Schema({
     likeId: String,
     likeFromUserId: String,
     likedArtIds: {type: [String], default: []},
-    artistIdToLikeArts: {
+    artistIdToLikedArts: {
         type: Map,
         of: [String],
         default: {},
