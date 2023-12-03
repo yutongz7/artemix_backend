@@ -5,6 +5,7 @@ module.exports = function (app, router) {
     app.use('/tags', require('./tags.js')(router));
     app.use('/likes', require('./likes.js')(router));
     app.use('/comments', require('./comments.js')(router));
+    app.use('/chats', require('./chats.js')(router));
     
     return router;
 };
