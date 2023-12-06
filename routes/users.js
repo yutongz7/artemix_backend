@@ -41,8 +41,54 @@ module.exports = function (router) {
             res.send(response_err);
             return
         }
-    })
+    });
 
     // TODO: POST/PUT function for edit preferences tags
+    usersRoute.post(async function (req, res) {
+        try {
+            const { userId, userName, userPassword, userEmail, userPhone, userProfileImgAddress, userPreferenceTags, tags } = req.body;
+    
+            let existingUser = await Users.findOne({ userId });
+    
+            if (existingUser) {
+                existingUser.userPreferenceTags = new Map(Object.entries(userPreferenceTags));
+                existingUser.userName = userName;
+                existingUser.userPassword = userPassword;
+                existingUser.userEmail = userEmail;
+                existingUser.userPhone = userPhone;
+                existingUser.userProfileImgAddress = userProfileImgAddress;
+                existingUser.tags = tags;
+                await existingUser.save();
+    
+                res.status(200).json({
+                    message: 'POST: 200 success (updated)',
+                    data: existingUser,
+                });
+            } else {
+                const newUser = new Users({
+                    userId,
+                    userName,
+                    userPassword,
+                    userEmail,
+                    userPhone,
+                    userProfileImgAddress,
+                    userPreferenceTags,
+                    tags
+                });
+    
+                await newUser.save();
+    
+                res.status(201).json({
+                    message: 'POST: 201 created',
+                    data: newUser,
+                });
+            }
+        } catch (err) {
+            res.status(500).json({
+                message: 'POST: 500 server error',
+                data: { err },
+            });
+        }
+    });
     return router;
 }
