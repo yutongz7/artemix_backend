@@ -52,10 +52,13 @@ module.exports = function (router) {
             const { userId, recommendArtistIds } = req.body;
     
             let existingRecommend = await RecommendArtists.findOne({ userId });
+console.log('Received data:', recommendArtistIds);
     
             if (existingRecommend) {
-                existingRecommend.recommendArtistIds = new Map(Object.entries(recommendArtistIds));
+                console.log(existingRecommend.recommendArtistIds)
+                existingRecommend.recommendArtistIds = Object.entries(recommendArtistIds);
                 await existingRecommend.save();
+                console.log(existingRecommend.recommendArtistIds)
     
                 res.status(200).json({
                     message: 'POST: 200 success (updated)',
