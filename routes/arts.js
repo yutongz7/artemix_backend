@@ -25,13 +25,14 @@ module.exports = function (router) {
                 data: { err }
             });
         }
-    });
+    })
 
     // TODO: POST/PUT function for edit preferences tags
     artsRoute.post(async function (req, res) {
         try {
-            const { artID, userId, userName, artTitle, artContent, artAddress, artTags, width, height} = req.body;
-    
+            const { userId, userName, artTitle, artContent, artAddress, artTags, width, height} = req.body;
+
+            console.log("post: userId = ", {userId},  ", userName = ", userName,  ", artTitle = ", userNartTitleame,  ", artContent = ", artContent,  ", artAddress = ", artAddress,  ", artTags = ", artTags,  ", width = ", width,  ", height = ", height)
             let existingArt = await Arts.findOne({ artId });
     
             if (existingArt) {
@@ -49,7 +50,7 @@ module.exports = function (router) {
                 });
             } else {
                 const newArt = new Arts({
-                    artID, userId, userName, artTitle, artContent, artAddress, artTags, width, height
+                    userId, userName, artTitle, artContent, artAddress, artTags, width, height
                 });
     
                 await newArt.save();

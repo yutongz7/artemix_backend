@@ -5,7 +5,7 @@ var UserSchema = new mongoose.Schema({
     userName: String,
     userPassword: String,
     userEmail: String,
-    userPhone: Number,
+    userPhone: String,
     userProfileImgAddress: String,
     userPreferenceTags: {type: [String], default: []},
     tags: {type: [String], default: []},

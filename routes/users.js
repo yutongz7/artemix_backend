@@ -49,9 +49,9 @@ module.exports = function (router) {
             const { userId, userName, userPassword, userEmail, userPhone, userProfileImgAddress, userPreferenceTags, tags } = req.body;
     
             let existingUser = await Users.findOne({ userId });
-    
+            console.log("existingUser: ", existingUser)
             if (existingUser) {
-                existingUser.userPreferenceTags = new Map(Object.entries(userPreferenceTags));
+                existingUser.userPreferenceTags = userPreferenceTags;
                 existingUser.userName = userName;
                 existingUser.userPassword = userPassword;
                 existingUser.userEmail = userEmail;
