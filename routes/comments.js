@@ -42,5 +42,43 @@ module.exports = function (router) {
             return
         }
     })
+
+    // TODO: POST/PUT function for edit preferences tags
+    commentsRoute.post(async function (req, res) {
+        try {
+            const { commentId, commentFromUserId, commentToArtId, commentContent} = req.body;
+    
+            let existingComment = await Comments.findOne({ commentId });
+    
+            if (existingComment) {
+                existingComment.commentFromUserId = commentFromUserId;
+                existingComment.commentToArtId = commentToArtId;
+                existingComment.commentContent = commentContent;
+                await existingComment.save();
+    
+                res.status(200).json({
+                    message: 'POST: 200 success (updated)',
+                    data: existingComment,
+                });
+            } else {
+                const newArt = new Arts({
+                    commentId, commentFromUserId, commentToArtId, commentContent
+                });
+    
+                await newArt.save();
+    
+                res.status(201).json({
+                    message: 'POST: 201 created',
+                    data: newArt,
+                });
+            }
+        } catch (err) {
+            res.status(500).json({
+                message: 'POST: 500 server error',
+                data: { err },
+            });
+        }
+    });
+
     return router;
 }

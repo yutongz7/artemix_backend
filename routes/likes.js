@@ -49,12 +49,12 @@ module.exports = function (router) {
 
     likesRoute.post(async function (req, res) {
         try {
-            const { likeFromUserId, artistIdToLikeCount, likedArtIds } = req.body;
+            const { likeFromUserId, likedArtIds, artistIdToLikedArts} = req.body;
     
             let existingLike = await Likes.findOne({ likeFromUserId });
     
             if (existingLike) {
-                existingLike.artistIdToLikedArts = new Map(Object.entries(artistIdToLikeCount));
+                existingLike.artistIdToLikedArts = new Map(Object.entries(artistIdToLikedArts));
                 existingLike.likedArtIds = likedArtIds;
                 await existingLike.save();
     
@@ -65,8 +65,8 @@ module.exports = function (router) {
             } else {
                 const newLike = new Likes({
                     likeFromUserId,
-                    artistIdToLikedArts: new Map(Object.entries(artistIdToLikeCount)),
                     likedArtIds,
+                    artistIdToLikedArts: new Map(Object.entries(artistIdToLikedArts)),
                 });
     
                 await newLike.save();

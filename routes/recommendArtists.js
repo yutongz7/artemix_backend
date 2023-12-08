@@ -52,7 +52,7 @@ module.exports = function (router) {
             const { userId, recommendArtistIds } = req.body;
     
             let existingRecommend = await RecommendArtists.findOne({ userId });
-console.log('Received data:', recommendArtistIds);
+            console.log('Received data:', recommendArtistIds);
     
             if (existingRecommend) {
                 console.log(existingRecommend.recommendArtistIds)
@@ -66,7 +66,6 @@ console.log('Received data:', recommendArtistIds);
                 });
             } else {
                 const newRecommendArtist = new RecommendArtists({
-                    recommendationId,
                     userId,
                     recommendArtistIds: new Map(Object.entries(recommendArtistIds)),
                 });
