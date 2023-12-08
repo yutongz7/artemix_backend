@@ -51,7 +51,7 @@ module.exports = function (router) {
             let existingUser = await Users.findOne({ userId });
     
             if (existingUser) {
-                existingUser.userPreferenceTags = new Map(Object.entries(userPreferenceTags));
+                existingUser.userPreferenceTags = userPreferenceTags;
                 existingUser.userName = userName;
                 existingUser.userPassword = userPassword;
                 existingUser.userEmail = userEmail;
@@ -75,15 +75,18 @@ module.exports = function (router) {
                     userPreferenceTags,
                     tags
                 });
-    
                 await newUser.save();
-    
+                console.log(newUser)
                 res.status(201).json({
                     message: 'POST: 201 created',
                     data: newUser,
                 });
             }
         } catch (err) {
+            if (err.name === 'ValidationError') {
+                console.error('Validation Error:', err.errors);
+                // Send a response indicating validation failure
+            } 
             res.status(500).json({
                 message: 'POST: 500 server error',
                 data: { err },
